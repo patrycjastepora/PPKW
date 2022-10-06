@@ -9,9 +9,7 @@ from time import asctime
 class web_server(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
-
         print(self.path)
-
         current_t = asctime()
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'

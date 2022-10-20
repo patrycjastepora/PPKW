@@ -17,15 +17,16 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()            
-            txt ="Hello World!"
+            txt ="Hello World!\n"
 
             if time:
-                txt = time()
+                txt = time() + "\n"
 
             elif rev:
-                txt = rev(userTxt)
+                txt = rev(userTxt) + "\n"
 
-            self.wfile.write(txt)
+            
+            self.wfile.write(txt.encode(encoding='UTF-8'))
         else:
             super().do_GET()
 

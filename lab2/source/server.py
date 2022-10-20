@@ -22,6 +22,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             if time:
                 txt = time()
 
+            elif rev:
+                txt = rev(userTxt)
+
             self.wfile.write(txt)
         else:
             super().do_GET()
@@ -29,6 +32,11 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     def time():
         return datetime.now().strftime("%H:%M:%S")
     
+    def rev(userTxt): 
+        s = ""
+        for ch in userTxt:
+            s = ch + s
+        return s
 # --- main ---
 
 PORT = 4080

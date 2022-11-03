@@ -18,6 +18,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()            
             self.wfile.write(b"Hello World!\n")
+            userStr = input()
+            check_string(userStr)
         else:
             super().do_GET()
             
@@ -35,8 +37,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     	        d["special"]+=1
     	    else: 
     	 	continue
-	with open("output.json", "w") as outfile:
-		json.dump(d, outfile)
+	return json.dumps(d)
     	    	 
 # --- main ---
 

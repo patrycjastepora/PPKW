@@ -35,9 +35,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     	        d["special"]+=1
     	    else: 
     	 	continue
-	return json.dumps(d)
-    	    	
-    
+	with open("output.json", "w") as outfile:
+		json.dump(d, outfile)
+    	    	 
 # --- main ---
 
 PORT = 4080

@@ -4,46 +4,46 @@ import socketserver
 import os
 import json
 
-#print('source code for "http.server":', http.server.__file__)
+
+# print('source code for "http.server":', http.server.__file__)
 
 class web_server(http.server.SimpleHTTPRequestHandler):
-    
+
     def do_GET(self):
 
         print(self.path)
-        
+
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()            
+            self.end_headers()
             self.wfile.write(b"Hello World!\n")
             userStr = input()
-            check_string(userStr)
+            self.check_string(userStr)
         else:
             super().do_GET()
-            
-    def check_string(userStr): 
-        special_characters=""!@#$%^&*()-+?_+<>,/""
-        d={"lowercase":0, "uppercase":0, "digits":0, "special":0}
-    	for c in userStr:
+
+    def check_string(userStr):
+        d = {"lowercase": 0, "uppercase": 0, "digits": 0, "special": 0}
+        for c in userStr:
             if c.islower():
-    	        d["lowercase"]+=1
-    	    elif c.isupper():
-    	        d["uppercase"]+=1
-    	    elif c.isdigit():
-    	        d["digits"]+=1
-    	    elif any(c in special_characters for c in userStr):
-    	        d["special"]+=1
-    	    else: 
-    	 	continue
-	return json.dumps(d)
-    	    	 
+                d["lowercase"] += 1
+            elif c.isupper():
+                d["uppercase"] += 1
+            elif c.isdigit():
+                d["digits"] += 1
+            elif any(not c.isalnum() for c in userStr):
+                d["special"] += 1
+            else:
+                continue
+        return json.dumps(d)
+
 # --- main ---
 
 PORT = 4080
 
 print(f'Starting: http://localhost:{PORT}')
 
-tcp_server = socketserver.TCPServer(("",PORT), web_server)
+tcp_server = socketserver.TCPServer(("", PORT), web_server)
 tcp_server.serve_forever()

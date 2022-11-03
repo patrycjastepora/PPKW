@@ -2,8 +2,8 @@
 import http.server
 import socketserver
 import os
+import re
 import json
-
 
 # print('source code for "http.server":', http.server.__file__)
 
@@ -19,8 +19,10 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             self.wfile.write(b"Hello World!\n")
-            userStr = input()
-            self.check_string(userStr)
+	elif self.path.startswith('/str='):
+		temp = self.path.split(=)[1]
+		temp = unquote(temp)
+		self.wfile.write(bytes(checkStr(temp), encoding='UTF-8'))
         else:
             super().do_GET()
 

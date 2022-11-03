@@ -2,6 +2,7 @@
 import http.server
 import socketserver
 import os
+import json
 
 #print('source code for "http.server":', http.server.__file__)
 
@@ -21,18 +22,20 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             super().do_GET()
             
     def check_string(userStr): 
-    	special_characters=""!@#$%^&*()-+?_+<>,/""
-    	d={"lowercase":0, "uppercase":0, "digits":0, "special":0}
+        special_characters=""!@#$%^&*()-+?_+<>,/""
+        d={"lowercase":0, "uppercase":0, "digits":0, "special":0}
     	for c in userStr:
-    	    if c.islower():
-    	       d["lowercase"]+=1
+            if c.islower():
+    	        d["lowercase"]+=1
     	    elif c.isupper():
-    	       d["uppercase"]+=1
+    	        d["uppercase"]+=1
     	    elif c.isdigit():
-    	       d["digits"]+=1
+    	        d["digits"]+=1
     	    elif any(c in special_characters for c in userStr):
-    	       d["special"]+=1
+    	        d["special"]+=1
     	    else: 
+    	 	continue
+	return json.dumps(d)
     	    	
     
 # --- main ---

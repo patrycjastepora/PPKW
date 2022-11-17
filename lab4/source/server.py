@@ -19,8 +19,18 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             self.wfile.write(b"Hello World!\n")
+	elif self.path.startswith('/str='):
+		temp = self.path.split(=)[1]
+		temp = unquote(temp)
+		self.wfile.write(bytes(checkStr(temp), encoding='UTF-8'))
         else:
             super().do_GET()
+
+    def math_operations(num1, num2):
+        num1 = int(num1)
+        num2 = int(num2)
+        d = { "sum" : num1+num2, "sub" : num1-num2, "mul" : num1*num2, "div" : num1/num2, "mod" : num1%num2}
+        return json.dumps(d)
 
 # --- main ---
 

@@ -3,10 +3,16 @@ from flask import Flask, request, jsonify
 
 app=Flask(__name__)
 
-def operation(num1, num2):
-	return [num1+num2,num1-num2,num1*num2,num1//num2,num1%num2]
+def operations(num1: int, num2: int):
+	d = {"sum": 0, "sub": 0, "mul": 0, "div": 0, "mod": 0}
+	d["sum"] = num1+num2
+	d["sub"] = num1-num2
+	d["mul"] = num1*num2
+	d["div"] = num1//num2
+	d["mod"] = num1%num2
+	return d
 	
-def check_str(userStr):
+def check_str(userStr: str):
 	d = {"lowercase": 0, "uppercase": 0, "digits": 0, "special": 0}
 	for c in userStr:
 		if c.islower():
@@ -20,5 +26,12 @@ def check_str(userStr):
     		else:
       			continue
   	return d
-  	
+@app.post('/')
+def return_statistics():
+	outNumbers = {}
+	outStr = {}
+	output = request.json
+	if 'num1' in output and 'num2' in output:
+		outNumbers = dict(operations(output['num1'], output['num2']))
+
 app.run(port=4080, host='0.0.0.0')
